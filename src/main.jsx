@@ -3,28 +3,45 @@ import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
 import { RouterProvider, createBrowserRouter } from "react-router-dom"
-import ErrorPage from './components/ErrorPage.jsx'
-import LoginComponent from './components/LoginComponent.jsx'
 import { Provider } from 'react-redux'
-import store from './store/Store.js'
-
+import { Auth, ErrorPage, LoginComponent, SignupComponent } from './components/index.js'
+import store from './store/store.js'
+import HomePage from './pages/HomePage.jsx'
+import Search from './pages/Search.jsx'
+import Profile from './pages/Profile.jsx'
 const router = createBrowserRouter([
-  {
-    path : "/",
-    element : <App/>,
-    errorElement : <ErrorPage/>,
-    children : [
-      {
-        path : "/contacts/:contactId",
-        element : <div><h1 className='font-bold'>Contact</h1></div>
-      },
+    {
+      path : "/",
+      element : <App/>,
+      errorElement : <ErrorPage/>,
+      children : [
+        {
+          path : "/",
+          element : <Auth authentication><HomePage/></Auth>
+        },
+
+        {
+          path : "/login",
+          element : <Auth authentication={false}><LoginComponent/></Auth>
+        },
+        {
+          path : "/signup",
+          element : <Auth authentication={false}><SignupComponent/></Auth>
+        },
+        {
+          path : "/search",
+          element : <Auth authentication><Search/></Auth>
+        },
+        {
+          path : "/profile/:profilename",
+          element : <Auth authentication><Profile/></Auth>
+        },
+
+      ]
+    }
+      
     ]
-  },
-  {
-    path : "/login",
-    element : <LoginComponent/>
-  }
-])
+ )
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
